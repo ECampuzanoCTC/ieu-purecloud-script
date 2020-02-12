@@ -81,135 +81,137 @@ export default {
   },
   methods: {
     map_panel() {
-      return{
-        "CUENTAS": this.cuentas,
-        "CONTACTOS": this.contactos,
-        "PROSPECTOS": this.prospectos
-      }
-    },
-    get_panel_length(panel) {
-      return this.map_panel()[panel].length;
-    },
-    get_panel(panel) {
-      return this.map_panel()[panel];
-    },
-    get_panel_rows(panel_name) {
-      const COLS_PER_ROW = 3;
-      let panel_rows = [];
+        return {
+          "CUENTAS": this.cuentas,
+          "CONTACTOS": this.contactos,
+          "PROSPECTOS": this.prospectos
+        }
+      },
+      get_panel_length(panel) {
+        return this.map_panel()[panel].length;
+      },
+      get_panel(panel) {
+        return this.map_panel()[panel];
+      },
+      get_panel_rows(panel_name) {
+        const COLS_PER_ROW = 3;
+        let panel_rows = [];
 
-      let panel = this.map_panel()[panel_name];
-      let panel_length = panel.length;
+        let panel = this.map_panel()[panel_name];
+        let panel_length = panel.length;
 
-      if(panel_length === 0)
-        return [];
+        if (panel_length === 0)
+          return [];
 
-      let row = [];
+        let row = [];
 
-      for(let panel_item_index = 0; panel_item_index !== panel_length; panel_item_index++){
-        if(row.length === COLS_PER_ROW){
-          panel_rows.push(row);
-          row = [];
+        for (let panel_item_index = 0; panel_item_index !== panel_length; panel_item_index++) {
+          if (row.length === COLS_PER_ROW) {
+            panel_rows.push(row);
+            row = [];
+          }
+
+          let panel_item = panel[panel_item_index];
+          row.push(panel_item)
         }
 
-        let panel_item = panel[panel_item_index];
-        row.push(panel_item)
-      }
+        panel_rows.push(row);
 
-      panel_rows.push(row);
-
-      return panel_rows;
-    }
-
-  },
-  filters:{
-    capitalize_panel_name(panel_name){
-      let first_char = panel_name[0];
-      let remaining = panel_name.substring(1, panel_name.length).toLowerCase();
-      return first_char + remaining;
-    },
-    lower_case_panel_name(panel_name){
-      return panel_name.toLowerCase();
-    }
-  },
-  computed:{
-    get_cuentas(){
-      let cuentas = [];
-      // eslint-disable-next-line no-undef
-      window.MyRemoter.invoke(
-        '{! $RemoteAction.PurecloudScript_controller.getAccountsByPhone }',
-        this.telefono,
-        function(result, event){
-            if(!event.status)
-                alert("Ha courrido un error");
+        return panel_rows;
+      },
+      get_cuentas() {
+        let cuentas = [];
+        // eslint-disable-next-line no-undef
+        Visualforce.remoting.Manager.invokeAction(
+          'PurecloudScript_controller.getAccountsByPhone',
+          this.telefono,
+          function (result, event) {
+            if (!event.status)
+              alert("Ha courrido un error");
             result = JSON.parse(result);
-            
-            if(result.length === 0)
-                return;
 
-            for(var cuenta of result){
-              let {Name , ApeMaterno__c , Phone , PersonEmail, Sexo__c, EstadoCivil__c, Id} = cuenta;
-                var cuenta_obj = {
-                  id: Id,
-                  nombre: Name,
-                  apellidos: ApeMaterno__c, 
-                  telefono: Phone,
-                  correo: PersonEmail,
-                  sexo: Sexo__c,
-                  estado_civil: EstadoCivil__c
-                }
-                cuentas.push(cuenta_obj);
+            if (result.length === 0)
+              return;
+
+            for (var cuenta of result) {
+              let {
+                Name,
+                ApeMaterno__c,
+                Phone,
+                PersonEmail,
+                Sexo__c,
+                EstadoCivil__c,
+                Id
+              } = cuenta;
+              var cuenta_obj = {
+                id: Id,
+                nombre: Name,
+                apellidos: ApeMaterno__c,
+                telefono: Phone,
+                correo: PersonEmail,
+                sexo: Sexo__c,
+                estado_civil: EstadoCivil__c
+              }
+              cuentas.push(cuenta_obj);
             }
-        }, 
-        {escape: false});
+          }, {
+            escape: false
+          });
 
         return cuentas;
-    },
-    get_contactos(){
-      let contactos = [];
-
-      window.MyRemoter.invoke(
-        '{! $RemoteAction.PurecloudScript_controller.getAccountsByPhone }',
-        this.telefono,
-        function(result, event){
-            if(!event.status)
-                alert("Ha courrido un error");
+      },
+      get_contactos() {
+        let contactos = [];
+        // eslint-disable-next-line no-undef
+        Visualforce.remoting.Manager.invokeAction(
+          'PurecloudScript_controller.getAccountsByPhone',
+          this.telefono,
+          function (result, event) {
+            if (!event.status)
+              alert("Ha courrido un error");
             result = JSON.parse(result);
-            
-            if(result.length === 0)
-                return;
 
-            for(var contacto of result){
-              let {Id,Name ,Phone , Email} = contacto;
-                var contacto_obj = {
-                  id: Id,
-                  nombre: Name,
-                  telefono: Phone,
-                  correo: Email
-                }
-                contactos.push(contacto_obj);
+            if (result.length === 0)
+              return;
+
+            for (var contacto of result) {
+              let {
+                Id,
+                Name,
+                Phone,
+                Email
+              } = contacto;
+              var contacto_obj = {
+                id: Id,
+                nombre: Name,
+                telefono: Phone,
+                correo: Email
+              }
+              contactos.push(contacto_obj);
             }
-        }, 
-        {escape: false});
+          }, {
+            escape: false
+          });
 
         return contactos;
-    },
-    get_prospectos(){
-      let prospectos = [];
-      // eslint-disable-next-line no-undef
-      window.MyRemoter.invoke(
-        '{! $RemoteAction.PurecloudScript_controller.getAccountsByPhone }',
-        this.telefono,
-        function(result, event){
-            if(!event.status)
-                alert("Ha courrido un error");
+      },
+      get_prospectos() {
+        let prospectos = [];
+        // eslint-disable-next-line no-undef
+        Visualforce.remoting.Manager.invokeAction(
+          'PurecloudScript_controller.getAccountsByPhone',
+          this.telefono,
+          function (result, event) {
+            if (!event.status)
+              alert("Ha courrido un error");
             result = JSON.parse(result);
-            
-            if(result.length === 0)
-                return;
 
-                // Id, NombreCompleto__c, Phone, Email, Inscripcion__c, InscripcionDescuento__c, Colegiatura__c, ColegiaturaDescuento__c, ImporteTotal__c, ExamenAdmision__c
+            if (result.length === 0)
+              return;
 
-            for(var prospecto of result){
+            // Id, NombreCompleto__c, Phone, Email, Inscripcion__c, InscripcionDescuento__c, Colegiatura__c, ColegiaturaDescuento__c, ImporteTotal__c, ExamenAdmision__c
+
+            for (var prospecto of result) {
               let {
                 Id,
                 NombreCompleto__c,
@@ -225,26 +227,41 @@ export default {
               } = prospecto;
 
 
-                var prospecto_obj = {
-                  id: Id,
-                  nombre: NombreCompleto__c,
-                  telefono: Phone,
-                  correo: Email,
-                  inscripcion: Inscripcion__c,
-                  inscripcion_con_descuento: InscripcionDescuento__c,
-                  colegiatura: Colegiatura__c,
-                  colegiatura_con_descuento: ColegiaturaDescuento__c,
-                  importe: ImporteTotal__c,
-                  examen_de_admision: ExamenAdmision__c,
-                  forma_de_pago: FormaPago__c
-                }
-                prospectos.push(prospecto_obj);
+              var prospecto_obj = {
+                id: Id,
+                nombre: NombreCompleto__c,
+                telefono: Phone,
+                correo: Email,
+                inscripcion: Inscripcion__c,
+                inscripcion_con_descuento: InscripcionDescuento__c,
+                colegiatura: Colegiatura__c,
+                colegiatura_con_descuento: ColegiaturaDescuento__c,
+                importe: ImporteTotal__c,
+                examen_de_admision: ExamenAdmision__c,
+                forma_de_pago: FormaPago__c
+              }
+              prospectos.push(prospecto_obj);
             }
-        }, 
-        {escape: false});
+          }, {
+            escape: false
+          });
 
         return prospectos;
+      }
+
+  },
+  filters:{
+    capitalize_panel_name(panel_name){
+      let first_char = panel_name[0];
+      let remaining = panel_name.substring(1, panel_name.length).toLowerCase();
+      return first_char + remaining;
+    },
+    lower_case_panel_name(panel_name){
+      return panel_name.toLowerCase();
     }
+  },
+  computed:{
+    
   },
   beforeMount(){
     this.cuentas = this.get_cuentas();
