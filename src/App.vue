@@ -135,7 +135,7 @@ export default {
     get_cuentas(){
       let cuentas = [];
       // eslint-disable-next-line no-undef
-      Visualforce.remoting.Manager.invokeAction(
+      window.MyRemoter.invoke(
         '{! $RemoteAction.PurecloudScript_controller.getAccountsByPhone }',
         this.telefono,
         function(result, event){
@@ -166,8 +166,8 @@ export default {
     },
     get_contactos(){
       let contactos = [];
-      // eslint-disable-next-line no-undef
-      Visualforce.remoting.Manager.invokeAction(
+
+      window.MyRemoter.invoke(
         '{! $RemoteAction.PurecloudScript_controller.getAccountsByPhone }',
         this.telefono,
         function(result, event){
@@ -196,7 +196,7 @@ export default {
     get_prospectos(){
       let prospectos = [];
       // eslint-disable-next-line no-undef
-      Visualforce.remoting.Manager.invokeAction(
+      window.MyRemoter.invoke(
         '{! $RemoteAction.PurecloudScript_controller.getAccountsByPhone }',
         this.telefono,
         function(result, event){
