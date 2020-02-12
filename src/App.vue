@@ -1,10 +1,14 @@
 <template>
   <v-app>
+    
     <v-content>
       <v-container>
-        <v-expansion-panels tile="true" multiple="true" :value="[0]" id="">
+        <who-component :telefono="telefono" />
+        <v-expansion-panels tile multiple :value="[0]" >
           <v-expansion-panel v-for="(panel, i) in paneles" :key="i">
             <v-expansion-panel-header color="#357673">
+              <template v-slot:actions>
+                <v-icon color="white"> $expand </v-icon> </template>
               <h3 class="white--text">{{ panel | capitalize_panel_name }} ({{ get_panel_length(panel) }})</h3>
             </v-expansion-panel-header>
             <v-expansion-panel-content 
@@ -14,99 +18,19 @@
               <v-row v-for="(panel_row, row_index) in get_panel_rows(panel)" :key="row_index">
 
                 <v-col cols="4" v-for="(panel_row_item, panel_row_item_index) in panel_row" :key="panel_row_item_index">
-                  <!-- Componente para cuentas y contactos-->
-                  <v-card 
-                  v-if="panel === 'CUENTAS' || panel === 'CONTACTOS'"
-                  tile="true">
-                    <v-card-text class="pb-2">
-                      <p class="mb-0">{{ panel | capitalize_panel_name | singular_panel_name }}</p>
-                      <!-- Informacion de contacto -->
-                      <h3 class="text--primary mb-1">{{ panel_row_item.nombre }} {{ panel_row_item.apellidos }}</h3>
-                      <p class="mb-0">
-                        <v-icon small="true">mdi-phone</v-icon> &nbsp;&nbsp;
-                        {{ panel_row_item.telefono }}
-                      </p>
-                      <p >
-                        <v-icon small="true">mdi-email</v-icon>
-                        {{ panel_row_item.correo }}
-                      </p>
-                      <!-- END Información de contacto-->
-
-
-                      <p class="light-blue--text text--darken-2 d-inline mr-6">
-                        <v-icon class="light-blue--text text--darken-2" small="true" >mdi-gender-male-female</v-icon>
-                        Masculino
-                      </p>
-                      <p class="light-green--text text--darken-1 d-inline-block mb-0">
-                        <v-icon class="light-green--text text--darken-1" small="true" >mdi-ring</v-icon>
-                        Soltero
-                      </p>
-                      
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-btn target="_blank" href="/" text color="deep-purple accent-4">Ver en Salesforce</v-btn>
-                    </v-card-actions>
-                  </v-card>
-
-                  <!-- Componente para prospectos-->
-                  <v-card 
-                  v-if="panel === 'PROSPECTOS'"
-                  tile="true">
-                    <v-card-text
-                    class="pb-2">
-                      <p class="mb-0">{{ panel | capitalize_panel_name | singular_panel_name }}</p>
-                      <!-- Informacion de contacto -->
-                      <h3 class="text--primary mb-1">{{ panel_row_item.nombre }} {{ panel_row_item.apellidos }}</h3>
-                      <p class="mb-0">
-                        <v-icon small="true">mdi-phone</v-icon> &nbsp;&nbsp;
-                        {{ panel_row_item.telefono }}
-                      </p>
-                      <p >
-                        <v-icon small="true">mdi-email</v-icon>
-                        {{ panel_row_item.correo }}
-                      </p>
-                      <!-- END Información de contacto-->
-
-                      <v-simple-table>
-                        <template v-slot:default>
-                          <tbody>
-                            <tr>
-                              <td>Colegiatura</td>
-                              <td class="text-right">{{ panel_row_item.colegiatura | to_currency_format }}</td>
-                            </tr>
-                            <tr>
-                              <td>Colegiatura con descuento</td>
-                              <td class="text-right">{{ panel_row_item.colegiatura_con_descuento | to_currency_format }}</td>
-                            </tr>
-                            <tr>
-                              <td>Inscripción</td>
-                              <td class="text-right">{{ panel_row_item.inscripcion | to_currency_format }}</td>
-                            </tr>
-                            <tr>
-                              <td>Inscripción con descuento</td>
-                              <td class="text-right">{{ panel_row_item.inscripcion_con_descuento | to_currency_format }}</td>
-                            </tr>
-                            <tr>
-                              <td>Examen de Admisión</td>
-                              <td class="text-right">{{ panel_row_item.examen_de_admision | to_currency_format }}</td>
-                            </tr>
-                            <tr>
-                              <td>Forma de pago</td>
-                              <td class="text-right">Efectivo</td>
-                            </tr>
-                            <tr>
-                              <td><b>Total</b></td>
-                              <td class="text-right"><b>{{ panel_row_item.total | to_currency_format }}</b></td>
-                            </tr>
-                          </tbody>
-                        </template>
-                      </v-simple-table> 
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-btn target="_blank" href="/" text="true" color="deep-purple accent-4">Ver en Salesforce</v-btn>
-                    </v-card-actions>
-                  </v-card>
-            
+                  <template
+                  v-if="panel === 'CUENTAS'">
+                    <cuenta-card :cuenta="panel_row_item"/>
+                  </template>
+                  <template
+                  v-else-if="panel === 'CONTACTOS'">
+                    <contacto-card :contacto="panel_row_item" />
+                  </template>
+                  <template
+                  v-else-if="panel === 'PROSPECTOS'">
+                    <prospecto-card :prospecto="panel_row_item" />
+                  </template>
+                  
                 </v-col>
               </v-row>
             </v-expansion-panel-content>
@@ -125,14 +49,23 @@
 </template>
 
 <script>
+import WhoComponent from '@/components/Who';
+import Cuenta from '@/components/Cuenta';
+import Contacto from '@/components/Contacto';
+import Prospecto from '@/components/Prospecto';
 
 
 export default {
   name: 'App',
-
+  components:{
+    WhoComponent,
+    'cuenta-card':Cuenta,
+    'contacto-card':Contacto,
+    'prospecto-card': Prospecto
+  },
   data() {
     return {
-      telefono: undefined,
+      telefono: this.$route.query.telefono,
       paneles: [
         "CUENTAS",
         "CONTACTOS",
@@ -189,6 +122,7 @@ export default {
 
   },
   filters:{
+
     capitalize_panel_name(panel_name){
       let first_char = panel_name[0];
       let remaining = panel_name.substring(1, panel_name.length).toLowerCase();
@@ -196,23 +130,9 @@ export default {
     },
     lower_case_panel_name(panel_name){
       return panel_name.toLowerCase();
-    },
-    to_currency_format(amount){
-      let formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 2
-      })
-
-      return formatter.format(amount);
-    },
-    singular_panel_name(panel_name){
-      return panel_name.substring(0, panel_name.length - 1)
     }
   },
-  computed:{
-    
-  },
+  
   beforeMount(){
     
     this.cuentas = [
@@ -229,6 +149,16 @@ export default {
       "correo": "Ferguson@correo.com"
     },
     {
+      "nombre": "Riggs",
+      "apellidos": "Sparks",
+      "telefono": "(904) 526-3140",
+      "correo": "Salas@correo.com"
+    },{
+      "nombre": "Riggs",
+      "apellidos": "Sparks",
+      "telefono": "(904) 526-3140",
+      "correo": "Salas@correo.com"
+    },{
       "nombre": "Riggs",
       "apellidos": "Sparks",
       "telefono": "(904) 526-3140",
@@ -294,9 +224,21 @@ export default {
       "examen_de_admision": 27618,
       "total": 22999,
       "forma_de_pago": ""
+    },
+    {
+      "nombre": "Church",
+      "apellidos": "Mejia",
+      "telefono": "(904) 493-2501",
+      "correo": "Rush@correo.com",
+      "inscripcion": 10043,
+      "inscripcion_con_descuento": 19652,
+      "colegiatura": 36737,
+      "colegiatura_con_descuento": 3488,
+      "examen_de_admision": 27618,
+      "total": 22999,
+      "forma_de_pago": ""
     }
   ]
-
   }
 };
 </script>
