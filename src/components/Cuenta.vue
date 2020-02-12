@@ -17,11 +17,11 @@
 
             <p class="light-blue--text text--darken-2 d-inline mr-6">
                 <v-icon class="light-blue--text text--darken-2" small>mdi-gender-male-female</v-icon>
-                Masculino
+                {{ sexo }}
             </p>
             <p class="light-green--text text--darken-1 d-inline-block mb-0">
                 <v-icon class="light-green--text text--darken-1" small>mdi-ring</v-icon>
-                Soltero
+                {{ estado_civil }}
             </p>
 
         </v-card-text>
@@ -41,7 +41,9 @@ export default {
             nombre: this.cuenta.nombre,
             apellidos: this.cuenta.apellidos,
             telefono: this.cuenta.telefono,
-            correo: this.cuenta.correo
+            correo: this.cuenta.correo,
+            sexo: this.cuenta.sexo,
+            estado_civil: this.cuenta.estado_civil
         }
     }
 }

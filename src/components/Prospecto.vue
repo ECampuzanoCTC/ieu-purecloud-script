@@ -41,7 +41,7 @@
                         </tr>
                         <tr>
                             <td>Forma de pago</td>
-                            <td class="text-right">Efectivo</td>
+                            <td class="text-right">{{ forma_de_pago }}</td>
                         </tr>
                         <tr>
                             <td><b>Total</b></td>
@@ -73,6 +73,7 @@ export default {
             inscripcion: this.prospecto.inscripcion,
             inscripcion_con_descuento: this.prospecto.inscripcion_con_descuento,
             examen_de_admision: this.prospecto.examen_de_admision,
+            forma_de_pago: this.prospecto.forma_de_pago,
             total: this.prospecto.total
         }
     },

@@ -15,14 +15,14 @@
             <!-- END Información de contacto-->
 
 
-            <p class="light-blue--text text--darken-2 d-inline mr-6">
+            <!-- <p class="light-blue--text text--darken-2 d-inline mr-6">
                 <v-icon class="light-blue--text text--darken-2" small>mdi-gender-male-female</v-icon>
                 Masculino
             </p>
             <p class="light-green--text text--darken-1 d-inline-block mb-0">
                 <v-icon class="light-green--text text--darken-1" small>mdi-ring</v-icon>
                 Soltero
-            </p>
+            </p> -->
 
         </v-card-text>
         <v-card-actions>

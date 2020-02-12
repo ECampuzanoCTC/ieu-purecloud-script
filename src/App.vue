@@ -131,113 +131,125 @@ export default {
       return panel_name.toLowerCase();
     }
   },
-  
+  computed:{
+    get_cuentas(){
+      let cuentas = [];
+      // eslint-disable-next-line no-undef
+      Visualforce.remoting.Manager.invokeAction(
+        '{! $RemoteAction.PurecloudScript_controller.getAccountsByPhone }',
+        this.telefono,
+        function(result, event){
+            if(!event.status)
+                alert("Ha courrido un error");
+            result = JSON.parse(result);
+            
+            if(result.length === 0)
+                return;
+
+            for(var cuenta of result){
+              let {Name , ApeMaterno__c , Phone , PersonEmail, Sexo__c, EstadoCivil__c, Id} = cuenta;
+                var cuenta_obj = {
+                  id: Id,
+                  nombre: Name,
+                  apellidos: ApeMaterno__c, 
+                  telefono: Phone,
+                  correo: PersonEmail,
+                  sexo: Sexo__c,
+                  estado_civil: EstadoCivil__c
+                }
+                cuentas.push(cuenta_obj);
+            }
+        }, 
+        {escape: false});
+
+        return cuentas;
+    },
+    get_contactos(){
+      let contactos = [];
+      // eslint-disable-next-line no-undef
+      Visualforce.remoting.Manager.invokeAction(
+        '{! $RemoteAction.PurecloudScript_controller.getAccountsByPhone }',
+        this.telefono,
+        function(result, event){
+            if(!event.status)
+                alert("Ha courrido un error");
+            result = JSON.parse(result);
+            
+            if(result.length === 0)
+                return;
+
+            for(var contacto of result){
+              let {Id,Name ,Phone , Email} = contacto;
+                var contacto_obj = {
+                  id: Id,
+                  nombre: Name,
+                  telefono: Phone,
+                  correo: Email
+                }
+                contactos.push(contacto_obj);
+            }
+        }, 
+        {escape: false});
+
+        return contactos;
+    },
+    get_prospectos(){
+      let prospectos = [];
+      // eslint-disable-next-line no-undef
+      Visualforce.remoting.Manager.invokeAction(
+        '{! $RemoteAction.PurecloudScript_controller.getAccountsByPhone }',
+        this.telefono,
+        function(result, event){
+            if(!event.status)
+                alert("Ha courrido un error");
+            result = JSON.parse(result);
+            
+            if(result.length === 0)
+                return;
+
+                // Id, NombreCompleto__c, Phone, Email, Inscripcion__c, InscripcionDescuento__c, Colegiatura__c, ColegiaturaDescuento__c, ImporteTotal__c, ExamenAdmision__c
+
+            for(var prospecto of result){
+              let {
+                Id,
+                NombreCompleto__c,
+                Phone,
+                Email,
+                Inscripcion__c,
+                InscripcionDescuento__c,
+                Colegiatura__c,
+                ColegiaturaDescuento__c,
+                ImporteTotal__c,
+                ExamenAdmision__c,
+                FormaPago__c
+              } = prospecto;
+
+
+                var prospecto_obj = {
+                  id: Id,
+                  nombre: NombreCompleto__c,
+                  telefono: Phone,
+                  correo: Email,
+                  inscripcion: Inscripcion__c,
+                  inscripcion_con_descuento: InscripcionDescuento__c,
+                  colegiatura: Colegiatura__c,
+                  colegiatura_con_descuento: ColegiaturaDescuento__c,
+                  importe: ImporteTotal__c,
+                  examen_de_admision: ExamenAdmision__c,
+                  forma_de_pago: FormaPago__c
+                }
+                prospectos.push(prospecto_obj);
+            }
+        }, 
+        {escape: false});
+
+        return prospectos;
+    }
+  },
   beforeMount(){
-    
-    this.cuentas = [
-    {
-      "nombre": "Kelli",
-      "apellidos": "Norman",
-      "telefono": "(856) 437-2994",
-      "correo": "Fisher@correo.com"
-    },
-    {
-      "nombre": "Marcella",
-      "apellidos": "Higgins",
-      "telefono": "(907) 562-2763",
-      "correo": "Ferguson@correo.com"
-    },
-    {
-      "nombre": "Riggs",
-      "apellidos": "Sparks",
-      "telefono": "(904) 526-3140",
-      "correo": "Salas@correo.com"
-    },{
-      "nombre": "Riggs",
-      "apellidos": "Sparks",
-      "telefono": "(904) 526-3140",
-      "correo": "Salas@correo.com"
-    },{
-      "nombre": "Riggs",
-      "apellidos": "Sparks",
-      "telefono": "(904) 526-3140",
-      "correo": "Salas@correo.com"
-    }
-  ]
-  this.contactos= [
-    {
-      "nombre": "Green",
-      "apellidos": "Preston",
-      "telefono": "(918) 519-2537",
-      "correo": "Vaughn@correo.com"
-    },
-    {
-      "nombre": "Neva",
-      "apellidos": "Doyle",
-      "telefono": "(916) 471-2498",
-      "correo": "Carlson@correo.com"
-    },
-    {
-      "nombre": "Durham",
-      "apellidos": "Bowen",
-      "telefono": "(945) 463-2508",
-      "correo": "Edna@correo.com"
-    }
-  ]
-  this.prospectos = [
-    {
-      "nombre": "Young",
-      "apellidos": "Heath",
-      "telefono": "(927) 506-3435",
-      "correo": "Whitney@correo.com",
-      "inscripcion": 2035,
-      "inscripcion_con_descuento": 49806,
-      "colegiatura": 28137,
-      "colegiatura_con_descuento": 23266,
-      "examen_de_admision": 47525,
-      "total": 32372,
-      "forma_de_pago": ""
-    },
-    {
-      "nombre": "Gallegos",
-      "apellidos": "Morales",
-      "telefono": "(982) 441-2562",
-      "correo": "Pam@correo.com",
-      "inscripcion": 18099,
-      "inscripcion_con_descuento": 23435,
-      "colegiatura": 12399,
-      "colegiatura_con_descuento": 49742,
-      "examen_de_admision": 5513,
-      "total": 26242,
-      "forma_de_pago": ""
-    },
-    {
-      "nombre": "Church",
-      "apellidos": "Mejia",
-      "telefono": "(904) 493-2501",
-      "correo": "Rush@correo.com",
-      "inscripcion": 10043,
-      "inscripcion_con_descuento": 19652,
-      "colegiatura": 36737,
-      "colegiatura_con_descuento": 3488,
-      "examen_de_admision": 27618,
-      "total": 22999,
-      "forma_de_pago": ""
-    },
-    {
-      "nombre": "Church",
-      "apellidos": "Mejia",
-      "telefono": "(904) 493-2501",
-      "correo": "Rush@correo.com",
-      "inscripcion": 10043,
-      "inscripcion_con_descuento": 19652,
-      "colegiatura": 36737,
-      "colegiatura_con_descuento": 3488,
-      "examen_de_admision": 27618,
-      "total": 22999,
-      "forma_de_pago": ""
-    }
-  ]
+    this.cuentas = this.get_cuentas();
+    this.contactos = this.get_contactos();
+    this.prospectos = this.get_prospectos();
   }
 };
 </script>
