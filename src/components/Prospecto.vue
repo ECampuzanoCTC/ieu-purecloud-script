@@ -3,7 +3,7 @@
         <v-card-text class="pb-2">
             <p class="mb-0">Prospecto</p>
             <!-- Informacion de contacto -->
-            <h3 class="text--primary mb-1">{{ nombre }} {{ apellidos }}</h3>
+            <h3 class="text--primary mb-1">{{ nombre }}</h3>
             <p class="mb-0">
                 <v-icon small>mdi-phone</v-icon> &nbsp;&nbsp;
                 {{ telefono }}
@@ -45,14 +45,14 @@
                         </tr>
                         <tr>
                             <td><b>Total</b></td>
-                            <td class="text-right"><b>{{ total  | to_currency_format }}</b></td>
+                            <td class="text-right"><b>{{ total | to_currency_format}}</b></td>
                         </tr>
                     </tbody>
                 </template>
             </v-simple-table>
         </v-card-text>
         <v-card-actions>
-            <v-btn target="_blank" href="/" text color="deep-purple accent-4">Ver en Salesforce</v-btn>
+            <v-btn target="_blank" :href="get_link" text color="deep-purple accent-4">Ver en Salesforce</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -64,6 +64,7 @@ export default {
     ],
     data(){
         return {
+            id: this.prospecto.id,
             nombre: this.prospecto.nombre,
             apellidos: this.prospecto.apellidos,
             telefono: this.prospecto.telefono,
@@ -87,6 +88,11 @@ export default {
         })
 
         return formatter.format(amount);
+        }
+    },
+    computed:{
+        get_link(){
+            return "https://ieu--qa.lightning.force.com/" + this.id;
         }
     }
 }

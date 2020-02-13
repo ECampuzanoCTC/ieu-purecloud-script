@@ -26,7 +26,7 @@
 
         </v-card-text>
         <v-card-actions>
-            <v-btn target="_blank" href="/" text color="deep-purple accent-4">Ver en Salesforce</v-btn>
+            <v-btn target="_blank" :href="get_link" text color="deep-purple accent-4">Ver en Salesforce</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -38,10 +38,16 @@ export default {
     ],
     data(){
         return {
+            id: this.contacto.id,
             nombre: this.contacto.nombre,
             apellidos: this.contacto.apellidos,
             telefono: this.contacto.telefono,
             correo: this.contacto.correo
+        }
+    },
+    computed:{
+        get_link(){
+            return "https://ieu--qa.lightning.force.com/" + this.id
         }
     }
 }

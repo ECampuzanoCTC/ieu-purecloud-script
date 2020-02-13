@@ -164,7 +164,7 @@ export default {
         let contactos = [];
         // eslint-disable-next-line no-undef
         Visualforce.remoting.Manager.invokeAction(
-          'PurecloudScript_controller.getAccountsByPhone',
+          'PurecloudScript_controller.getContactsByPhone',
           this.telefono,
           function (result, event) {
             if (!event.status)
@@ -199,7 +199,7 @@ export default {
         let prospectos = [];
         // eslint-disable-next-line no-undef
         Visualforce.remoting.Manager.invokeAction(
-          'PurecloudScript_controller.getAccountsByPhone',
+          'PurecloudScript_controller.getLeadsByPhone',
           this.telefono,
           function (result, event) {
             if (!event.status)
@@ -208,8 +208,6 @@ export default {
 
             if (result.length === 0)
               return;
-
-            // Id, NombreCompleto__c, Phone, Email, Inscripcion__c, InscripcionDescuento__c, Colegiatura__c, ColegiaturaDescuento__c, ImporteTotal__c, ExamenAdmision__c
 
             for (var prospecto of result) {
               let {
@@ -236,7 +234,7 @@ export default {
                 inscripcion_con_descuento: InscripcionDescuento__c,
                 colegiatura: Colegiatura__c,
                 colegiatura_con_descuento: ColegiaturaDescuento__c,
-                importe: ImporteTotal__c,
+                total: ImporteTotal__c,
                 examen_de_admision: ExamenAdmision__c,
                 forma_de_pago: FormaPago__c
               }
