@@ -4,7 +4,7 @@
     <v-content>
       <v-container>
         <who-component :telefono="telefono" />
-        <v-expansion-panels tile multiple :value="[0]" >
+        <v-expansion-panels tile multiple :value="[1]" >
           <v-expansion-panel v-for="(panel, i) in paneles" :key="i">
             <v-expansion-panel-header color="#357673">
               <template v-slot:actions>
@@ -68,7 +68,6 @@ export default {
       telefono: this.$route.query.telefono,
       paneles: [
         "CUENTAS",
-        "CONTACTOS",
         "PROSPECTOS"
       ],
 
@@ -187,56 +186,72 @@ export default {
   ]
   this.prospectos = [
     {
-      "nombre": "Young",
-      "apellidos": "Heath",
-      "telefono": "(927) 506-3435",
-      "correo": "Whitney@correo.com",
-      "inscripcion": 2035,
-      "inscripcion_con_descuento": 49806,
-      "colegiatura": 28137,
-      "colegiatura_con_descuento": 23266,
-      "examen_de_admision": 47525,
-      "total": 32372,
-      "forma_de_pago": ""
+      "owner": "Natasha Blackwell",
+      "nombre": "Samantha",
+      "apellidos": "Gregory",
+      "telefono": "(839) 506-3097",
+      "correo": "Michelle@correo.com",
+      "fecha_apertura_grupo": "Thu Aug 04 1994 09:49:51 GMT+0000 (UTC)",
+      "estatus": "activo",
+      "nivel": "algún nivel",
+      "programa": "Algún programa",
+      "plantel": "algún plantel",
+      "periodo": "algun periodo",
+      "fecha_inicio_clases": "Mon Jun 11 1990 15:46:45 GMT+0000 (UTC)",
+      "grupo": "algún grupo",
+      "fecha_de_creacion": "Tue Jul 10 2007 17:11:23 GMT+0000 (UTC)",
+      "etapa": "alguna etapa"
     },
     {
-      "nombre": "Gallegos",
-      "apellidos": "Morales",
-      "telefono": "(982) 441-2562",
-      "correo": "Pam@correo.com",
-      "inscripcion": 18099,
-      "inscripcion_con_descuento": 23435,
-      "colegiatura": 12399,
-      "colegiatura_con_descuento": 49742,
-      "examen_de_admision": 5513,
-      "total": 26242,
-      "forma_de_pago": ""
+      "owner": "Mccarty Sweeney",
+      "nombre": "Nellie",
+      "apellidos": "Reilly",
+      "telefono": "(908) 535-2632",
+      "correo": "Mckay@correo.com",
+      "fecha_apertura_grupo": "Sun Aug 07 1977 23:07:05 GMT+0000 (UTC)",
+      "estatus": "activo",
+      "nivel": "algún nivel",
+      "programa": "Algún programa",
+      "plantel": "algún plantel",
+      "periodo": "algun periodo",
+      "fecha_inicio_clases": "Tue Oct 28 2008 16:03:03 GMT+0000 (UTC)",
+      "grupo": "algún grupo",
+      "fecha_de_creacion": "Thu Dec 22 1988 23:07:51 GMT+0000 (UTC)",
+      "etapa": "alguna etapa"
     },
     {
-      "nombre": "Church",
-      "apellidos": "Mejia",
-      "telefono": "(904) 493-2501",
-      "correo": "Rush@correo.com",
-      "inscripcion": 10043,
-      "inscripcion_con_descuento": 19652,
-      "colegiatura": 36737,
-      "colegiatura_con_descuento": 3488,
-      "examen_de_admision": 27618,
-      "total": 22999,
-      "forma_de_pago": ""
+      "owner": "Cotton Chaney",
+      "nombre": "Lola",
+      "apellidos": "Padilla",
+      "telefono": "(839) 555-2602",
+      "correo": "Corinne@correo.com",
+      "fecha_apertura_grupo": "Wed Jan 11 1989 12:00:27 GMT+0000 (UTC)",
+      "estatus": "activo",
+      "nivel": "algún nivel",
+      "programa": "Algún programa",
+      "plantel": "algún plantel",
+      "periodo": "algun periodo",
+      "fecha_inicio_clases": "Sat Mar 29 2008 22:19:53 GMT+0000 (UTC)",
+      "grupo": "algún grupo",
+      "fecha_de_creacion": "Sat May 17 2008 09:18:07 GMT+0000 (UTC)",
+      "etapa": "alguna etapa"
     },
     {
-      "nombre": "Church",
-      "apellidos": "Mejia",
-      "telefono": "(904) 493-2501",
-      "correo": "Rush@correo.com",
-      "inscripcion": 10043,
-      "inscripcion_con_descuento": 19652,
-      "colegiatura": 36737,
-      "colegiatura_con_descuento": 3488,
-      "examen_de_admision": 27618,
-      "total": 22999,
-      "forma_de_pago": ""
+      "owner": "Rivers Hodge",
+      "nombre": "Fischer",
+      "apellidos": "Cline",
+      "telefono": "(857) 553-2995",
+      "correo": "Golden@correo.com",
+      "fecha_apertura_grupo": "Tue Jun 17 1980 08:09:31 GMT+0000 (UTC)",
+      "estatus": "activo",
+      "nivel": "algún nivel",
+      "programa": "Algún programa",
+      "plantel": "algún plantel",
+      "periodo": "algun periodo",
+      "fecha_inicio_clases": "Tue Aug 28 1984 14:44:35 GMT+0000 (UTC)",
+      "grupo": "algún grupo",
+      "fecha_de_creacion": "Sat Dec 23 1972 10:52:07 GMT+0000 (UTC)",
+      "etapa": "alguna etapa"
     }
   ]
   }
