@@ -14,43 +14,64 @@
             </p>
             <!-- END Información de contacto-->
 
-            <v-simple-table>
-                <template v-slot:default>
-                    <tbody>
-                        <tr>
-                            <td>Colegiatura</td>
-                            <td class="text-right">{{ colegiatura  | to_currency_format }}</td>
-                        </tr>
-                        <tr>
-                            <td>Colegiatura con descuento</td>
-                            <td class="text-right">{{ colegiatura_con_descuento  | to_currency_format }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Inscripción</td>
-                            <td class="text-right">{{ inscripcion  | to_currency_format }}</td>
-                        </tr>
-                        <tr>
-                            <td>Inscripción con descuento</td>
-                            <td class="text-right">{{ inscripcion_con_descuento  | to_currency_format }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Examen de Admisión</td>
-                            <td class="text-right">{{ examen_de_admision  | to_currency_format }}</td>
-                        </tr>
-                        <tr>
-                            <td>Forma de pago</td>
-                            <td class="text-right">Efectivo</td>
-                        </tr>
-                        <tr>
-                            <td><b>Total</b></td>
-                            <td class="text-right"><b>{{ total  | to_currency_format }}</b></td>
-                        </tr>
-                    </tbody>
-                </template>
-            </v-simple-table>
+            
         </v-card-text>
+        <v-card class="ml-2 mr-2" tile outlined>
+            <v-card-text>
+                <p class="overline text--primary mb-2 font-weight-bold">Oferta educativa</p>
+                <h3 class="light-blue--text  mb-2">
+                        {{ programa }}
+                </h3>
+                <!-- Fechas --->
+                <p class="mb-1">
+                    <span class="font-weight-black">
+                        Inicio de clases:
+                    </span>&nbsp;
+                    {{ fecha_inicio_clases }}
+                </p>
+                <!-- Fechas -->
+                <p class="mb-1">
+                    <span class="font-weight-black ">
+                        Plantel:
+                    </span>&nbsp;
+                    {{ plantel }}
+                </p><p class="mb-1">
+                    <span class="font-weight-black">
+                        Periodo:
+                    </span>&nbsp;
+                    {{ programa }}
+                </p><p class="mb-1">
+                    <span class="font-weight-black">
+                        Nivel:
+                    </span>&nbsp;
+                    {{ nivel }}
+                </p>
+                <p class="mb-1">
+                    <span class="font-weight-black">
+                        Etapa:
+                    </span>&nbsp;
+                    {{ etapa }}
+                </p>
+                <p class="mb-2">
+                    <span class="font-weight-black">
+                        Estatus:
+                    </span>&nbsp;
+                    {{ estatus }}
+                </p>
+                
+                <br />
+                <p class="overline indigo--text text--primary mb-2 font-weight-bold">Grupo</p>
+                <h3 class="light-green--text mb-2">
+                        {{ grupo }}
+                </h3>
+                <p class="mb-1">
+                    <span class="font-weight-black">
+                        Fecha de apertura:
+                    </span>&nbsp;
+                    {{ fecha_apertura_grupo }}
+                </p>
+            </v-card-text>
+        </v-card>
         <v-card-actions>
             <v-btn target="_blank" href="/" text color="deep-purple accent-4">Ver en Salesforce</v-btn>
         </v-card-actions>
@@ -64,16 +85,21 @@ export default {
     ],
     data(){
         return {
+            owner: this.prospecto.owner,
+            fecha_de_creacion: this.prospecto.fecha_de_creacion,
             nombre: this.prospecto.nombre,
             apellidos: this.prospecto.apellidos,
             telefono: this.prospecto.telefono,
             correo: this.prospecto.correo,
-            colegiatura: this.prospecto.colegiatura,
-            colegiatura_con_descuento: this.prospecto.colegiatura_con_descuento,
-            inscripcion: this.prospecto.inscripcion,
-            inscripcion_con_descuento: this.prospecto.inscripcion_con_descuento,
-            examen_de_admision: this.prospecto.examen_de_admision,
-            total: this.prospecto.total
+            programa: this.prospecto.programa,
+            nivel: this.prospecto.nivel,
+            plantel: this.prospecto.plantel,
+            periodo: this.prospecto.periodo,
+            fecha_inicio_clases: this.prospecto.fecha_inicio_clases,
+            grupo: this.prospecto.grupo,
+            fecha_apertura_grupo: this.prospecto.fecha_apertura_grupo,
+            etapa: this.prospecto.etapa,
+            estatus: this.prospecto.estatus
         }
     },
     filters:{
