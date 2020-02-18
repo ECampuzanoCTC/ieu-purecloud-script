@@ -13,7 +13,7 @@
                 {{ correo }}
             </p>
             <!-- END Información de contacto-->
-            <a :href="`https://ieu--qa--c.cs16.visual.force.com/${owner.Id}`" class="indigo--text mb-0">
+            <a :href="`https://ieu--qa--c.cs16.visual.force.com/${owner.id}`" class="indigo--text mb-0">
                 <span class="font-weight-black">Creador: </span>  
                 {{ owner.nombre }}
             </a>
