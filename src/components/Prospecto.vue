@@ -13,81 +13,66 @@
                 {{ correo }}
             </p>
             <!-- END Información de contacto-->
-
-            <v-simple-table>
-                <template v-slot:default>
-                    <tbody>
-                        <tr>
-                            <td>Colegiatura</td>
-                            <td class="text-right">{{ colegiatura  | to_currency_format }}</td>
-                        </tr>
-                        <tr>
-                            <td>Colegiatura con descuento</td>
-                            <td class="text-right">{{ colegiatura_con_descuento  | to_currency_format }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Inscripción</td>
-                            <td class="text-right">{{ inscripcion  | to_currency_format }}</td>
-                        </tr>
-                        <tr>
-                            <td>Inscripción con descuento</td>
-                            <td class="text-right">{{ inscripcion_con_descuento  | to_currency_format }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Examen de Admisión</td>
-                            <td class="text-right">{{ examen_de_admision  | to_currency_format }}</td>
-                        </tr>
-                        <tr>
-                            <td>Forma de pago</td>
-                            <td class="text-right">{{ forma_de_pago }}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Total</b></td>
-                            <td class="text-right"><b>{{ total | to_currency_format}}</b></td>
-                        </tr>
-                    </tbody>
-                </template>
-            </v-simple-table>
+            <a :href="`https://ieu--qa--c.cs16.visual.force.com/${owner.Id}`" class="indigo--text mb-0">
+                <span class="font-weight-black">Creador: </span>  
+                {{ owner.nombre }}
+            </a>
+            <p class="mb-0">
+                <span class="font-weight-black">Fecha de creación: </span>  
+                {{ fecha_creacion | format_date }}
+            </p>
+            
         </v-card-text>
+        <prospecto-inner-card 
+        v-if="oferta_educativa && grupo"
+        :oferta_educativa="oferta_educativa" :grupo="grupo"/>
         <v-card-actions>
             <v-btn target="_blank" :href="get_link" text color="deep-purple accent-4">Ver en Salesforce</v-btn>
         </v-card-actions>
     </v-card>
 </template>
 <script>
+import InnerCard from '@/components/ProspectoInnerCard';
+
 export default {
     name: "prospecto-card",
+    components: {
+        "prospecto-inner-card": InnerCard
+    },
     props: [
         'prospecto'
     ],
     data(){
         return {
             id: this.prospecto.id,
+            owner: this.prospecto.owner,
+            fecha_creacion: this.prospecto.fecha_creacion,
             nombre: this.prospecto.nombre,
             apellidos: this.prospecto.apellidos,
             telefono: this.prospecto.telefono,
             correo: this.prospecto.correo,
-            colegiatura: this.prospecto.colegiatura,
-            colegiatura_con_descuento: this.prospecto.colegiatura_con_descuento,
-            inscripcion: this.prospecto.inscripcion,
-            inscripcion_con_descuento: this.prospecto.inscripcion_con_descuento,
-            examen_de_admision: this.prospecto.examen_de_admision,
-            forma_de_pago: this.prospecto.forma_de_pago,
-            total: this.prospecto.total
+            oferta_educativa: this.prospecto.oferta_educativa,
+            grupo: this.prospecto.grupo
         }
     },
     filters:{
 
         to_currency_format(amount){
-        let formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2
-        })
+            let formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            })
 
-        return formatter.format(amount);
+            return formatter.format(amount);
+        },
+        format_date(date){
+            let d = new Date(date);
+            let num_date = d.getUTCDate();
+            let num_month = d.getUTCMonth() + 1;
+            let num_year = d.getUTCFullYear();
+
+            return `${num_date}/${num_month}/${num_year}`;        
         }
     },
     computed:{

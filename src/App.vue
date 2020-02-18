@@ -4,7 +4,7 @@
     <v-content>
       <v-container>
         <who-component :telefono="telefono" />
-        <v-expansion-panels tile multiple :value="[0]" >
+        <v-expansion-panels tile multiple :value="[1]" >
           <v-expansion-panel v-for="(panel, i) in paneles" :key="i">
             <v-expansion-panel-header color="#357673">
               <template v-slot:actions>
@@ -21,10 +21,6 @@
                   <template
                   v-if="panel === 'CUENTAS'">
                     <cuenta-card :cuenta="panel_row_item"/>
-                  </template>
-                  <template
-                  v-else-if="panel === 'CONTACTOS'">
-                    <contacto-card :contacto="panel_row_item" />
                   </template>
                   <template
                   v-else-if="panel === 'PROSPECTOS'">
@@ -51,7 +47,6 @@
 <script>
 import WhoComponent from '@/components/Who';
 import Cuenta from '@/components/Cuenta';
-import Contacto from '@/components/Contacto';
 import Prospecto from '@/components/Prospecto';
 
 
@@ -60,7 +55,6 @@ export default {
   components:{
     WhoComponent,
     'cuenta-card':Cuenta,
-    'contacto-card':Contacto,
     'prospecto-card': Prospecto
   },
   data() {
@@ -68,12 +62,10 @@ export default {
       telefono: this.$route.query.telefono,
       paneles: [
         "CUENTAS",
-        "CONTACTOS",
         "PROSPECTOS"
       ],
 
       cuentas: [],
-      contactos: [],
       prospectos: [],
 
     }
@@ -154,47 +146,14 @@ export default {
               }
               cuentas.push(cuenta_obj);
             }
+            return cuentas;
           }, {
             escape: false
           });
 
         return cuentas;
       },
-      get_contactos() {
-        let contactos = [];
-        // eslint-disable-next-line no-undef
-        Visualforce.remoting.Manager.invokeAction(
-          'PurecloudScript_controller.getContactsByPhone',
-          this.telefono,
-          function (result, event) {
-            if (!event.status)
-              alert("Ha courrido un error");
-            result = JSON.parse(result);
-
-            if (result.length === 0)
-              return;
-
-            for (var contacto of result) {
-              let {
-                Id,
-                Name,
-                Phone,
-                Email
-              } = contacto;
-              var contacto_obj = {
-                id: Id,
-                nombre: Name,
-                telefono: Phone,
-                correo: Email
-              }
-              contactos.push(contacto_obj);
-            }
-          }, {
-            escape: false
-          });
-
-        return contactos;
-      },
+      
       get_prospectos() {
         let prospectos = [];
         // eslint-disable-next-line no-undef
@@ -209,19 +168,24 @@ export default {
             if (result.length === 0)
               return;
 
+            console.log(result);
+
             for (var prospecto of result) {
               let {
                 Id,
                 NombreCompleto__c,
                 Phone,
                 Email,
-                Inscripcion__c,
-                InscripcionDescuento__c,
-                Colegiatura__c,
-                ColegiaturaDescuento__c,
-                ImporteTotal__c,
-                ExamenAdmision__c,
-                FormaPago__c
+                Owner,
+                Programa__r,
+                Nivel__r,
+                Periodo__r,
+                Plantel__r,
+                IndicadorInicioClases__c,
+                FechaInicioClases__c,
+                GrupoAsignado__r,
+                FechaCreacion__c
+
               } = prospecto;
 
 
@@ -230,16 +194,29 @@ export default {
                 nombre: NombreCompleto__c,
                 telefono: Phone,
                 correo: Email,
-                inscripcion: Inscripcion__c,
-                inscripcion_con_descuento: InscripcionDescuento__c,
-                colegiatura: Colegiatura__c,
-                colegiatura_con_descuento: ColegiaturaDescuento__c,
-                total: ImporteTotal__c,
-                examen_de_admision: ExamenAdmision__c,
-                forma_de_pago: FormaPago__c
+                fecha_creacion: FechaCreacion__c,
+                owner:{
+                  id: Owner.Id,
+                  nombre: Owner.Name
+                },
+                oferta_educativa:{
+                  programa: Programa__r.Name,
+                  periodo: Periodo__r.Name,
+                  plantel: Plantel__r.Name,
+                  nivel: Nivel__r.Name,
+                  fecha_inicio_clases: FechaInicioClases__c,
+                  estatus: IndicadorInicioClases__c
+                },
+                grupo:{
+                  nombre: GrupoAsignado__r.Name,
+                  fecha_apertura: GrupoAsignado__r.FechaEstimadaApertura__c
+                }
               }
-              prospectos.push(prospecto_obj);
+              console.log(prospecto_obj);
+              prospectos.push(prospecto_obj);              
             }
+
+            return prospectos;
           }, {
             escape: false
           });
@@ -263,7 +240,7 @@ export default {
   },
   beforeMount(){
     this.cuentas = this.get_cuentas();
-    this.contactos = this.get_contactos();
+    
     this.prospectos = this.get_prospectos();
   }
 };
