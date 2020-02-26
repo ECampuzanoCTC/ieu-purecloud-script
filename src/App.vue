@@ -67,7 +67,7 @@ export default {
 
       cuentas: [],
       prospectos: [],
-
+      oportunidades: []
     }
 
   },
@@ -222,6 +222,76 @@ export default {
           });
 
         return prospectos;
+      },
+      get_oportunidades(){
+        let oportunidades = [];
+
+        // eslint-disable-next-line no-undef
+        Visualforce.remoting.Manager.invokeAction(
+          'PurecloudScript_controller.getOpportunitiesByPhone',
+          this.telefono,
+          function (result, event) {
+            if (!event.status)
+              alert("Ha courrido un error");
+            result = JSON.parse(result);
+
+            if (result.length === 0)
+              return;
+
+            console.log(result);
+
+            for (var oportunidad of result) {
+              let {
+                Id,
+                NombreCompleto__c,
+                Phone,
+                Email,
+                Owner,
+                Programa__r,
+                Nivel__r,
+                Periodo__r,
+                Plantel__r,
+                IndicadorInicioClases__c,
+                FechaInicioClases__c,
+                GrupoAsignado__r,
+                FechaCreacion__c
+
+              } = oportunidad;
+
+
+              var oportunidad_obj = {
+                id: Id,
+                nombre: NombreCompleto__c,
+                telefono: Phone,
+                correo: Email,
+                fecha_creacion: FechaCreacion__c,
+                owner:{
+                  id: Owner.Id,
+                  nombre: Owner.Name
+                },
+                oferta_educativa:{
+                  programa: Programa__r.Name,
+                  periodo: Periodo__r.Name,
+                  plantel: Plantel__r.Name,
+                  nivel: Nivel__r.Name,
+                  fecha_inicio_clases: FechaInicioClases__c,
+                  estatus: IndicadorInicioClases__c
+                },
+                grupo:{
+                  nombre: GrupoAsignado__r.Name,
+                  fecha_apertura: GrupoAsignado__r.FechaEstimadaApertura__c
+                }
+              }
+              console.log(oportunidad_obj);
+              oportunidades.push(oportunidad_obj);              
+            }
+
+            return oportunidades;
+          }, {
+            escape: false
+          });
+
+        return oportunidades;
       }
 
   },
@@ -240,7 +310,7 @@ export default {
   },
   beforeMount(){
     this.cuentas = this.get_cuentas();
-    
+    this.oportunidades = this.get_oportunidades();
     this.prospectos = this.get_prospectos();
   }
 };
