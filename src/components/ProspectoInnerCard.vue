@@ -24,11 +24,11 @@
                 </span>&nbsp;
                 {{ oferta_educativa.nivel }}
             </p>
-            <p class="mb-1">
+            <p v-if="etapa" class="mb-1">
                 <span class="font-weight-black">
                     Estado del lead:
                 </span>&nbsp;
-                {{ etapa || "alguna etapa" }}
+                {{ etapa }}
             </p>
             
             <br />
@@ -45,6 +45,7 @@
             </p>
             <!-- Fechas -->
             <p class="mb-1">
+                
                 <span class="font-weight-black">
                     Fecha de apertura:
                 </span>&nbsp;
@@ -62,7 +63,7 @@
 <script>
 export default {
     name: "prospecto-inner-card",
-    props:['grupo', 'oferta_educativa'],
+    props:['grupo', 'oferta_educativa', 'etapa'],
     computed:{
         get_recurso_para_estatus(){
             let img_tag = this.oferta_educativa.estatus;

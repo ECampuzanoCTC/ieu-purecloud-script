@@ -30,8 +30,6 @@
                   v-if="panel === 'CUENTAS'">
                     <cuenta-card :cuenta="panel_row_item"/> 
                   </template>
-                  
-                  
                 </v-col>
               </v-row>
             </v-expansion-panel-content>
@@ -84,9 +82,10 @@ export default {
     map_panel() {
         return {
           "CUENTAS": this.cuentas,
-          "CONTACTOS": this.contactos,
-          "PROSPECTOS": this.prospectos,
-          "OPORTUNIDADES": this.oportunidades
+
+          "OPORTUNIDADES": this.oportunidades,
+          "PROSPECTOS": this.prospectos
+
         }
       },
       get_panel_length(panel) {
@@ -212,6 +211,7 @@ export default {
       }
     }
   ]
+
       }
 
   },
@@ -230,8 +230,9 @@ export default {
   },
   beforeMount(){
     this.cuentas = this.get_cuentas();
+    this.oportunidades = this.get_oportunidades();
     this.prospectos = this.get_prospectos();
-    this.oportunidades =this.get_prospectos();
+    
   }
 };
 </script>
