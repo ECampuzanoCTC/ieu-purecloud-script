@@ -23,14 +23,13 @@
                     <cuenta-card :cuenta="panel_row_item"/>
                   </template>
                   <template
-                  v-else-if="panel === 'CONTACTOS'">
-                    <contacto-card :contacto="panel_row_item" />
-                  </template>
-                  <template
                   v-else-if="panel === 'PROSPECTOS'">
                     <prospecto-card :prospecto="panel_row_item" />
                   </template>
-                  
+                  <template
+                  v-else-if="panel === 'OPORTUNIDADES'">
+                    <oportunidad-card :oportunidad="panel_row_item" />
+                  </template>                  
                 </v-col>
               </v-row>
             </v-expansion-panel-content>
@@ -51,8 +50,8 @@
 <script>
 import WhoComponent from '@/components/Who';
 import Cuenta from '@/components/Cuenta';
-import Contacto from '@/components/Contacto';
 import Prospecto from '@/components/Prospecto';
+import Oportunidad from '@/components/Oportunidad';
 
 
 export default {
@@ -60,22 +59,21 @@ export default {
   components:{
     WhoComponent,
     'cuenta-card':Cuenta,
-    'contacto-card':Contacto,
-    'prospecto-card': Prospecto
+    'prospecto-card': Prospecto,
+    'oportunidad-card': Oportunidad
   },
   data() {
     return {
       telefono: this.$route.query.telefono,
       paneles: [
-        "CUENTAS",
-        "CONTACTOS",
-        "PROSPECTOS"
+        "PROSPECTOS",
+        "OPORTUNIDADES",
+        "CUENTAS"
       ],
 
       cuentas: [],
-      contactos: [],
       prospectos: [],
-
+      oportunidades: []
     }
 
   },
@@ -83,7 +81,7 @@ export default {
     map_panel() {
         return {
           "CUENTAS": this.cuentas,
-          "CONTACTOS": this.contactos,
+          "OPORTUNIDADES": this.oportunidades,
           "PROSPECTOS": this.prospectos
         }
       },
@@ -154,47 +152,14 @@ export default {
               }
               cuentas.push(cuenta_obj);
             }
+            return cuentas;
           }, {
             escape: false
           });
 
         return cuentas;
       },
-      get_contactos() {
-        let contactos = [];
-        // eslint-disable-next-line no-undef
-        Visualforce.remoting.Manager.invokeAction(
-          'PurecloudScript_controller.getContactsByPhone',
-          this.telefono,
-          function (result, event) {
-            if (!event.status)
-              alert("Ha courrido un error");
-            result = JSON.parse(result);
-
-            if (result.length === 0)
-              return;
-
-            for (var contacto of result) {
-              let {
-                Id,
-                Name,
-                Phone,
-                Email
-              } = contacto;
-              var contacto_obj = {
-                id: Id,
-                nombre: Name,
-                telefono: Phone,
-                correo: Email
-              }
-              contactos.push(contacto_obj);
-            }
-          }, {
-            escape: false
-          });
-
-        return contactos;
-      },
+      
       get_prospectos() {
         let prospectos = [];
         // eslint-disable-next-line no-undef
@@ -209,19 +174,25 @@ export default {
             if (result.length === 0)
               return;
 
+            console.log(result);
+
             for (var prospecto of result) {
               let {
                 Id,
                 NombreCompleto__c,
                 Phone,
                 Email,
-                Inscripcion__c,
-                InscripcionDescuento__c,
-                Colegiatura__c,
-                ColegiaturaDescuento__c,
-                ImporteTotal__c,
-                ExamenAdmision__c,
-                FormaPago__c
+                Owner,
+                Programa__r,
+                Nivel__r,
+                Periodo__r,
+                Plantel__r,
+                IndicadorInicioClases__c,
+                FechaInicioClases__c,
+                GrupoAsignado__r,
+                FechaCreacion__c,
+                Status
+
               } = prospecto;
 
 
@@ -230,21 +201,106 @@ export default {
                 nombre: NombreCompleto__c,
                 telefono: Phone,
                 correo: Email,
-                inscripcion: Inscripcion__c,
-                inscripcion_con_descuento: InscripcionDescuento__c,
-                colegiatura: Colegiatura__c,
-                colegiatura_con_descuento: ColegiaturaDescuento__c,
-                total: ImporteTotal__c,
-                examen_de_admision: ExamenAdmision__c,
-                forma_de_pago: FormaPago__c
+                fecha_creacion: FechaCreacion__c,
+                etapa: Status,
+                owner:{
+                  id: Owner.Id,
+                  nombre: Owner.Name
+                },
+                oferta_educativa:{
+                  programa: Programa__r.Name,
+                  periodo: Periodo__r.Name,
+                  plantel: Plantel__r.Name,
+                  nivel: Nivel__r.Name,
+                  fecha_inicio_clases: FechaInicioClases__c,
+                  estatus: IndicadorInicioClases__c
+                },
+                grupo:{
+                  nombre: GrupoAsignado__r.Name,
+                  fecha_apertura: GrupoAsignado__r.FechaEstimadaApertura__c
+                }
               }
-              prospectos.push(prospecto_obj);
+              console.log(prospecto_obj);
+              prospectos.push(prospecto_obj);              
             }
+
+            return prospectos;
           }, {
             escape: false
           });
 
         return prospectos;
+      },
+      get_oportunidades(){
+        let oportunidades = [];
+
+        // eslint-disable-next-line no-undef
+        Visualforce.remoting.Manager.invokeAction(
+          'PurecloudScript_controller.getOpportunitiesByPhone',
+          this.telefono,
+          function (result, event) {
+            if (!event.status)
+              alert("Ha courrido un error");
+            result = JSON.parse(result);
+
+            if (result.length === 0)
+              return;
+
+            console.log(result);
+
+            for (var oportunidad of result) {
+              let {
+                Id,
+                Name,
+                Account,
+                CorreoCuenta__c,
+                Owner,
+                Programa__r,
+                Nivel__r,
+                Periodo__r,
+                Plantel__r,
+                IndicadorInicioClases__c,
+                FechainicioClases__c,
+                Grupo__r,
+                FechaAperturaGrupo__c,
+                StageName
+              } = oportunidad;
+
+
+              var oportunidad_obj = {
+                id: Id,
+                nombre: Name,
+                telefono: Account.Phone,
+                correo: CorreoCuenta__c,
+                fecha_creacion: undefined,
+                etapa: StageName,
+                owner:{
+                  id: Owner.Id,
+                  nombre: Owner.Name
+                },
+                oferta_educativa:{
+                  programa: Programa__r.Name,
+                  periodo: Periodo__r.Name,
+                  plantel: Plantel__r.Name,
+                  nivel: Nivel__r.Name,
+                  fecha_inicio_clases: FechainicioClases__c,
+                  estatus: IndicadorInicioClases__c
+                },
+                grupo:{
+                  nombre: Grupo__r.Name,
+                  fecha_apertura: FechaAperturaGrupo__c
+                }
+              }
+              console.log(oportunidad_obj);
+              oportunidades.push(oportunidad_obj);              
+            }
+
+            return oportunidades;
+          }, {
+            escape: false
+          });
+
+        return oportunidades;
       }
 
   },
@@ -263,7 +319,7 @@ export default {
   },
   beforeMount(){
     this.cuentas = this.get_cuentas();
-    this.contactos = this.get_contactos();
+    this.oportunidades = this.get_oportunidades();
     this.prospectos = this.get_prospectos();
   }
 };

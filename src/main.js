@@ -15,6 +15,7 @@ const router  = new VueRouter({
 })
 
 Vue.config.productionTip = false
+Vue.config.devtools = true
 Vue.use(VueRouter);
 new Vue({
   vuetify,
