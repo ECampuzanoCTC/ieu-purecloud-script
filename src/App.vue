@@ -4,7 +4,7 @@
     <v-content>
       <v-container>
         <who-component :telefono="telefono" />
-        <v-expansion-panels tile multiple :value="[1]" >
+        <v-expansion-panels tile multiple :value="[0]" >
           <v-expansion-panel v-for="(panel, i) in paneles" :key="i">
             <v-expansion-panel-header color="#357673">
               <template v-slot:actions>
@@ -26,7 +26,10 @@
                   v-else-if="panel === 'PROSPECTOS'">
                     <prospecto-card :prospecto="panel_row_item" />
                   </template>
-                  
+                  <template
+                  v-else-if="panel === 'OPORTUNIDADES'">
+                    <oportunidad-card :oportunidad="panel_row_item" />
+                  </template>                  
                 </v-col>
               </v-row>
             </v-expansion-panel-content>
@@ -48,6 +51,7 @@
 import WhoComponent from '@/components/Who';
 import Cuenta from '@/components/Cuenta';
 import Prospecto from '@/components/Prospecto';
+import Oportunidad from '@/components/Oportunidad';
 
 
 export default {
@@ -55,14 +59,16 @@ export default {
   components:{
     WhoComponent,
     'cuenta-card':Cuenta,
-    'prospecto-card': Prospecto
+    'prospecto-card': Prospecto,
+    'oportunidad-card': Oportunidad
   },
   data() {
     return {
       telefono: this.$route.query.telefono,
       paneles: [
-        "CUENTAS",
-        "PROSPECTOS"
+        "PROSPECTOS",
+        "OPORTUNIDADES",
+        "CUENTAS"
       ],
 
       cuentas: [],
@@ -75,7 +81,7 @@ export default {
     map_panel() {
         return {
           "CUENTAS": this.cuentas,
-          "CONTACTOS": this.contactos,
+          "OPORTUNIDADES": this.oportunidades,
           "PROSPECTOS": this.prospectos
         }
       },
@@ -184,7 +190,8 @@ export default {
                 IndicadorInicioClases__c,
                 FechaInicioClases__c,
                 GrupoAsignado__r,
-                FechaCreacion__c
+                FechaCreacion__c,
+                Status
 
               } = prospecto;
 
@@ -195,6 +202,7 @@ export default {
                 telefono: Phone,
                 correo: Email,
                 fecha_creacion: FechaCreacion__c,
+                etapa: Status,
                 owner:{
                   id: Owner.Id,
                   nombre: Owner.Name
@@ -243,28 +251,28 @@ export default {
             for (var oportunidad of result) {
               let {
                 Id,
-                NombreCompleto__c,
-                Phone,
-                Email,
+                Name,
+                Account,
+                CorreoCuenta__c,
                 Owner,
                 Programa__r,
                 Nivel__r,
                 Periodo__r,
                 Plantel__r,
                 IndicadorInicioClases__c,
-                FechaInicioClases__c,
-                GrupoAsignado__r,
-                FechaCreacion__c
+                FechainicioClases__c,
+                Grupo__r,
+                FechaAperturaGrupo__c
 
               } = oportunidad;
 
 
               var oportunidad_obj = {
                 id: Id,
-                nombre: NombreCompleto__c,
-                telefono: Phone,
-                correo: Email,
-                fecha_creacion: FechaCreacion__c,
+                nombre: Name,
+                telefono: Account.Phone,
+                correo: CorreoCuenta__c,
+                fecha_creacion: undefined,
                 owner:{
                   id: Owner.Id,
                   nombre: Owner.Name
@@ -274,12 +282,12 @@ export default {
                   periodo: Periodo__r.Name,
                   plantel: Plantel__r.Name,
                   nivel: Nivel__r.Name,
-                  fecha_inicio_clases: FechaInicioClases__c,
+                  fecha_inicio_clases: FechainicioClases__c,
                   estatus: IndicadorInicioClases__c
                 },
                 grupo:{
-                  nombre: GrupoAsignado__r.Name,
-                  fecha_apertura: GrupoAsignado__r.FechaEstimadaApertura__c
+                  nombre: Grupo__r.Name,
+                  fecha_apertura: FechaAperturaGrupo__c
                 }
               }
               console.log(oportunidad_obj);

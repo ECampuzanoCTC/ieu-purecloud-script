@@ -13,10 +13,11 @@
                 {{ correo }}
             </p>
             <!-- END Información de contacto-->
-            <a :href="`https://ieu--qa--c.cs16.visual.force.com/${owner.id}`" class="indigo--text mb-0">
-                <span class="font-weight-black">Creador: </span>  
-                {{ owner.nombre }}
-            </a>
+            <span class="font-weight-black">Propietario: 
+                <a :href="get_owner_link" class="indigo--text mb-0">
+                    {{ owner.nombre }}
+                </a>
+            </span>  
             <p class="mb-0">
                 <span class="font-weight-black">Fecha de creación: </span>  
                 {{ fecha_creacion | format_date }}
@@ -25,7 +26,7 @@
         </v-card-text>
         <prospecto-inner-card 
         v-if="oferta_educativa && grupo"
-        :oferta_educativa="oferta_educativa" :grupo="grupo"/>
+        :oferta_educativa="oferta_educativa" :grupo="grupo" :etapa="etapa"/>
         <v-card-actions>
             <v-btn target="_blank" :href="get_link" text color="deep-purple accent-4">Ver en Salesforce</v-btn>
         </v-card-actions>
@@ -52,20 +53,12 @@ export default {
             telefono: this.prospecto.telefono,
             correo: this.prospecto.correo,
             oferta_educativa: this.prospecto.oferta_educativa,
-            grupo: this.prospecto.grupo
+            grupo: this.prospecto.grupo,
+            etapa: this.prospecto.etapa
         }
     },
     filters:{
 
-        to_currency_format(amount){
-            let formatter = new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2
-            })
-
-            return formatter.format(amount);
-        },
         format_date(date){
             let d = new Date(date);
             let num_date = d.getUTCDate();
@@ -78,6 +71,9 @@ export default {
     computed:{
         get_link(){
             return "https://ieu--qa.lightning.force.com/" + this.id;
+        },
+        get_owner_link(){
+            return "https://ieu--qa.lightning.force.com/" + this.owner.id;
         }
     }
 }

@@ -31,12 +31,6 @@
                 </span>&nbsp;
                 {{ oferta_educativa.nivel }}
             </p>
-            <p class="mb-1">
-                <span class="font-weight-black">
-                    Etapa:
-                </span>&nbsp;
-                {{ etapa || "alguna etapa" }}
-            </p>
             <p class="mb-0">
                 <span class="font-weight-black">
                     Estatus:

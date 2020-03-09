@@ -13,13 +13,13 @@
                 {{ correo }}
             </p>
             <!-- END Información de contacto-->
-            <span class="font-weight-black">Creador: 
+            <span class="font-weight-black">Propietario: 
                 
-                <a :href="`https://ieu--qa--c.cs16.visual.force.com/${owner.id}`" class="indigo--text mb-0">
+                <a :href="get_owner_link" class="indigo--text mb-0">
                     {{ owner.nombre }}
                 </a>
             </span>  
-            <p class="mb-0">
+            <p v-if="fecha_creacion" class="mb-0">
                 <span class="font-weight-black">Fecha de creación: </span>  
                 {{ fecha_creacion | format_date }}
             </p>
@@ -50,7 +50,6 @@ export default {
             owner: this.oportunidad.owner,
             fecha_creacion: this.oportunidad.fecha_creacion,
             nombre: this.oportunidad.nombre,
-            apellidos: this.oportunidad.apellidos,
             telefono: this.oportunidad.telefono,
             correo: this.oportunidad.correo,
             oferta_educativa: this.oportunidad.oferta_educativa,
@@ -58,16 +57,6 @@ export default {
         }
     },
     filters:{
-
-        to_currency_format(amount){
-            let formatter = new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2
-            })
-
-            return formatter.format(amount);
-        },
         format_date(date){
             let d = new Date(date);
             let num_date = d.getUTCDate();
@@ -80,6 +69,9 @@ export default {
     computed:{
         get_link(){
             return "https://ieu--qa.lightning.force.com/" + this.id;
+        },
+        get_owner_link(){
+            return "https://ieu--qa.lightning.force.com/" + this.owner.id;
         }
     }
 }
