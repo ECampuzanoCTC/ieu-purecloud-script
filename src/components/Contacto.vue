@@ -15,18 +15,18 @@
             <!-- END Información de contacto-->
 
 
-            <p class="light-blue--text text--darken-2 d-inline mr-6">
+            <!-- <p class="light-blue--text text--darken-2 d-inline mr-6">
                 <v-icon class="light-blue--text text--darken-2" small>mdi-gender-male-female</v-icon>
                 Masculino
             </p>
             <p class="light-green--text text--darken-1 d-inline-block mb-0">
                 <v-icon class="light-green--text text--darken-1" small>mdi-ring</v-icon>
                 Soltero
-            </p>
+            </p> -->
 
         </v-card-text>
         <v-card-actions>
-            <v-btn target="_blank" href="/" text color="deep-purple accent-4">Ver en Salesforce</v-btn>
+            <v-btn target="_blank" :href="get_link" text color="deep-purple accent-4">Ver en Salesforce</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -38,10 +38,16 @@ export default {
     ],
     data(){
         return {
+            id: this.contacto.id,
             nombre: this.contacto.nombre,
             apellidos: this.contacto.apellidos,
             telefono: this.contacto.telefono,
             correo: this.contacto.correo
+        }
+    },
+    computed:{
+        get_link(){
+            return "https://ieu--qa.lightning.force.com/" + this.id
         }
     }
 }

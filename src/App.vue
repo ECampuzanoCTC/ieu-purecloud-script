@@ -19,18 +19,17 @@
 
                 <v-col cols="4" v-for="(panel_row_item, panel_row_item_index) in panel_row" :key="panel_row_item_index">
                   <template
-                  v-if="panel === 'CUENTAS'">
-                    <cuenta-card :cuenta="panel_row_item"/>
-                  </template>
-                  <template
-                  v-else-if="panel === 'CONTACTOS'">
-                    <contacto-card :contacto="panel_row_item" />
-                  </template>
-                  <template
-                  v-else-if="panel === 'PROSPECTOS'">
+                  v-if="panel === 'PROSPECTOS'">
                     <prospecto-card :prospecto="panel_row_item" />
                   </template>
-                  
+                  <template
+                  v-if="panel === 'OPORTUNIDADES'">
+                    <oportunidad-card :oportunidad="panel_row_item"/>
+                  </template>
+                  <template
+                  v-if="panel === 'CUENTAS'">
+                    <cuenta-card :cuenta="panel_row_item"/> 
+                  </template>
                 </v-col>
               </v-row>
             </v-expansion-panel-content>
@@ -51,8 +50,8 @@
 <script>
 import WhoComponent from '@/components/Who';
 import Cuenta from '@/components/Cuenta';
-import Contacto from '@/components/Contacto';
 import Prospecto from '@/components/Prospecto';
+import Oportunidad from '@/components/Oportunidad';
 
 
 export default {
@@ -60,69 +59,163 @@ export default {
   components:{
     WhoComponent,
     'cuenta-card':Cuenta,
-    'contacto-card':Contacto,
-    'prospecto-card': Prospecto
+    'prospecto-card': Prospecto,
+    'oportunidad-card': Oportunidad
   },
   data() {
     return {
       telefono: this.$route.query.telefono,
       paneles: [
-        "CUENTAS",
-        "CONTACTOS",
-        "PROSPECTOS"
+        "PROSPECTOS",
+        "OPORTUNIDADES",
+        "CUENTAS"
       ],
 
       cuentas: [],
-      contactos: [],
       prospectos: [],
+      oportunidades: []
 
     }
 
   },
   methods: {
     map_panel() {
-      return{
-        "CUENTAS": this.cuentas,
-        "CONTACTOS": this.contactos,
-        "PROSPECTOS": this.prospectos
-      }
-    },
-    get_panel_length(panel) {
-      return this.map_panel()[panel].length;
-    },
-    get_panel(panel) {
-      return this.map_panel()[panel];
-    },
-    get_panel_rows(panel_name) {
-      const COLS_PER_ROW = 3;
-      let panel_rows = [];
+        return {
+          "CUENTAS": this.cuentas,
 
-      let panel = this.map_panel()[panel_name];
-      let panel_length = panel.length;
+          "OPORTUNIDADES": this.oportunidades,
+          "PROSPECTOS": this.prospectos
 
-      if(panel_length === 0)
-        return [];
+        }
+      },
+      get_panel_length(panel) {
+        return this.map_panel()[panel].length;
+      },
+      get_panel(panel) {
+        return this.map_panel()[panel];
+      },
+      get_panel_rows(panel_name) {
+        const COLS_PER_ROW = 3;
+        let panel_rows = [];
 
-      let row = [];
+        let panel = this.map_panel()[panel_name];
+        let panel_length = panel.length;
 
-      for(let panel_item_index = 0; panel_item_index !== panel_length; panel_item_index++){
-        if(row.length === COLS_PER_ROW){
-          panel_rows.push(row);
-          row = [];
+        if (panel_length === 0)
+          return [];
+
+        let row = [];
+
+        for (let panel_item_index = 0; panel_item_index !== panel_length; panel_item_index++) {
+          if (row.length === COLS_PER_ROW) {
+            panel_rows.push(row);
+            row = [];
+          }
+
+          let panel_item = panel[panel_item_index];
+          row.push(panel_item)
         }
 
-        let panel_item = panel[panel_item_index];
-        row.push(panel_item)
+        panel_rows.push(row);
+
+        return panel_rows;
+      },
+      get_cuentas() {
+        return []
+      },
+      
+      get_prospectos() {
+        return [
+    {
+      "owner": "Copeland Schmidt",
+      "nombre": "Chapman",
+      "apellidos": "Singleton Sims",
+      "telefono": "(912) 512-2711",
+      "correo": "krystal@correo.com",
+      "fecha_creacion": "Mon Jan 07 2019 17:47:41 GMT+0000 (UTC)",
+      "etapa": "alguna etapa",
+      "oferta_educativa": {
+        "programa": "algún programa",
+        "nivel": "algún nivel",
+        "plantel": "algún plantel",
+        "periodo": "algún periodo",
+        "fecha_inicio_clases": "Fri Aug 04 1995 00:48:56 GMT+0000 (UTC)",
+        "estatus": "algún estatus"
+      },
+      "grupo": {
+        "nombre": "algún grupo",
+        "fecha_apertura": "Sun Jul 20 1980 04:33:06 GMT+0000 (UTC)"
       }
-
-      panel_rows.push(row);
-
-      return panel_rows;
+    },
+    {
+      "owner": "Spencer Nguyen",
+      "nombre": "Townsend",
+      "apellidos": "Dunn Austin",
+      "telefono": "(806) 580-2498",
+      "correo": "olsen@correo.com",
+      "fecha_creacion": "Wed Sep 22 1993 13:44:04 GMT+0000 (UTC)",
+      "etapa": "alguna etapa",
+      "oferta_educativa": {
+        "programa": "algún programa",
+        "nivel": "algún nivel",
+        "plantel": "algún plantel",
+        "periodo": "algún periodo",
+        "fecha_inicio_clases": "Wed Aug 06 2003 03:12:44 GMT+0000 (UTC)",
+        "estatus": "algún estatus"
+      },
+      "grupo": {
+        "nombre": "algún grupo",
+        "fecha_apertura": "Wed Apr 06 1977 15:43:36 GMT+0000 (UTC)"
+      }
+    },
+    {
+      "owner": "Ila Vasquez",
+      "nombre": "Tanner",
+      "apellidos": "Cameron Mann",
+      "telefono": "(893) 578-2781",
+      "correo": "susanne@correo.com",
+      "fecha_creacion": "Fri Sep 13 1991 14:09:33 GMT+0000 (UTC)",
+      "etapa": "alguna etapa",
+      "oferta_educativa": {
+        "programa": "algún programa",
+        "nivel": "algún nivel",
+        "plantel": "algún plantel",
+        "periodo": "algún periodo",
+        "fecha_inicio_clases": "Tue Feb 27 1996 07:49:56 GMT+0000 (UTC)",
+        "estatus": "algún estatus"
+      },
+      "grupo": {
+        "nombre": "algún grupo",
+        "fecha_apertura": "Wed Feb 20 1991 16:00:51 GMT+0000 (UTC)"
+      }
+    },
+    {
+      "owner": "Mccall Cole",
+      "nombre": "Goodwin",
+      "apellidos": "Stokes Lindsay",
+      "telefono": "(837) 505-2947",
+      "correo": "annmarie@correo.com",
+      "fecha_creacion": "Fri Jan 08 1971 10:17:02 GMT+0000 (UTC)",
+      "etapa": "alguna etapa",
+      "oferta_educativa": {
+        "programa": "algún programa",
+        "nivel": "algún nivel",
+        "plantel": "algún plantel",
+        "periodo": "algún periodo",
+        "fecha_inicio_clases": "Mon Jan 07 1974 23:43:21 GMT+0000 (UTC)",
+        "estatus": "algún estatus"
+      },
+      "grupo": {
+        "nombre": "algún grupo",
+        "fecha_apertura": "Tue May 24 1983 12:29:57 GMT+0000 (UTC)"
+      }
     }
+  ]
+
+      }
 
   },
   filters:{
-
     capitalize_panel_name(panel_name){
       let first_char = panel_name[0];
       let remaining = panel_name.substring(1, panel_name.length).toLowerCase();
@@ -132,113 +225,14 @@ export default {
       return panel_name.toLowerCase();
     }
   },
-  
-  beforeMount(){
+  computed:{
     
-    this.cuentas = [
-    {
-      "nombre": "Kelli",
-      "apellidos": "Norman",
-      "telefono": "(856) 437-2994",
-      "correo": "Fisher@correo.com"
-    },
-    {
-      "nombre": "Marcella",
-      "apellidos": "Higgins",
-      "telefono": "(907) 562-2763",
-      "correo": "Ferguson@correo.com"
-    },
-    {
-      "nombre": "Riggs",
-      "apellidos": "Sparks",
-      "telefono": "(904) 526-3140",
-      "correo": "Salas@correo.com"
-    },{
-      "nombre": "Riggs",
-      "apellidos": "Sparks",
-      "telefono": "(904) 526-3140",
-      "correo": "Salas@correo.com"
-    },{
-      "nombre": "Riggs",
-      "apellidos": "Sparks",
-      "telefono": "(904) 526-3140",
-      "correo": "Salas@correo.com"
-    }
-  ]
-  this.contactos= [
-    {
-      "nombre": "Green",
-      "apellidos": "Preston",
-      "telefono": "(918) 519-2537",
-      "correo": "Vaughn@correo.com"
-    },
-    {
-      "nombre": "Neva",
-      "apellidos": "Doyle",
-      "telefono": "(916) 471-2498",
-      "correo": "Carlson@correo.com"
-    },
-    {
-      "nombre": "Durham",
-      "apellidos": "Bowen",
-      "telefono": "(945) 463-2508",
-      "correo": "Edna@correo.com"
-    }
-  ]
-  this.prospectos = [
-    {
-      "nombre": "Young",
-      "apellidos": "Heath",
-      "telefono": "(927) 506-3435",
-      "correo": "Whitney@correo.com",
-      "inscripcion": 2035,
-      "inscripcion_con_descuento": 49806,
-      "colegiatura": 28137,
-      "colegiatura_con_descuento": 23266,
-      "examen_de_admision": 47525,
-      "total": 32372,
-      "forma_de_pago": ""
-    },
-    {
-      "nombre": "Gallegos",
-      "apellidos": "Morales",
-      "telefono": "(982) 441-2562",
-      "correo": "Pam@correo.com",
-      "inscripcion": 18099,
-      "inscripcion_con_descuento": 23435,
-      "colegiatura": 12399,
-      "colegiatura_con_descuento": 49742,
-      "examen_de_admision": 5513,
-      "total": 26242,
-      "forma_de_pago": ""
-    },
-    {
-      "nombre": "Church",
-      "apellidos": "Mejia",
-      "telefono": "(904) 493-2501",
-      "correo": "Rush@correo.com",
-      "inscripcion": 10043,
-      "inscripcion_con_descuento": 19652,
-      "colegiatura": 36737,
-      "colegiatura_con_descuento": 3488,
-      "examen_de_admision": 27618,
-      "total": 22999,
-      "forma_de_pago": ""
-    },
-    {
-      "nombre": "Church",
-      "apellidos": "Mejia",
-      "telefono": "(904) 493-2501",
-      "correo": "Rush@correo.com",
-      "inscripcion": 10043,
-      "inscripcion_con_descuento": 19652,
-      "colegiatura": 36737,
-      "colegiatura_con_descuento": 3488,
-      "examen_de_admision": 27618,
-      "total": 22999,
-      "forma_de_pago": ""
-    }
-  ]
+  },
+  beforeMount(){
+    this.cuentas = this.get_cuentas();
+    this.oportunidades = this.get_oportunidades();
+    this.prospectos = this.get_prospectos();
+    
   }
 };
 </script>
