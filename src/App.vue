@@ -262,8 +262,8 @@ export default {
                 IndicadorInicioClases__c,
                 FechainicioClases__c,
                 Grupo__r,
-                FechaAperturaGrupo__c
-
+                FechaAperturaGrupo__c,
+                StageName
               } = oportunidad;
 
 
@@ -273,6 +273,7 @@ export default {
                 telefono: Account.Phone,
                 correo: CorreoCuenta__c,
                 fecha_creacion: undefined,
+                etapa: StageName,
                 owner:{
                   id: Owner.Id,
                   nombre: Owner.Name

@@ -23,6 +23,10 @@
                 <span class="font-weight-black">Fecha de creación: </span>  
                 {{ fecha_creacion | format_date }}
             </p>
+            <p class="mb-0">
+                <span class="font-weight-black">Etapa: </span>  
+                {{ etapa }}
+            </p>
             
         </v-card-text>
         <oportunidad-inner-card 
@@ -52,6 +56,7 @@ export default {
             nombre: this.oportunidad.nombre,
             telefono: this.oportunidad.telefono,
             correo: this.oportunidad.correo,
+            etapa: this.oportunidad.etapa,
             oferta_educativa: this.oportunidad.oferta_educativa,
             grupo: this.oportunidad.grupo
         }

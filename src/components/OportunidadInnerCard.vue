@@ -5,14 +5,7 @@
             <h3 class="light-blue--text  mb-2">
                 {{ oferta_educativa.programa }}
             </h3>
-            <!-- Fechas --->
-            <p class="mb-1">
-                <span class="font-weight-black">
-                    Inicio de clases:
-                </span>&nbsp;
-                {{ oferta_educativa.fecha_inicio_clases }}
-            </p>
-            <!-- Fechas -->
+            
             <p class="mb-1">
                 <span class="font-weight-black ">
                     Plantel:
@@ -25,11 +18,31 @@
                 </span>&nbsp;
                 {{ oferta_educativa.periodo }}
             </p>
-            <p class="mb-1">
+            <p class="mb-2">
                 <span class="font-weight-black">
                     Nivel:
                 </span>&nbsp;
                 {{ oferta_educativa.nivel }}
+            </p>
+            
+            <br />
+            <p class="overline indigo--text text--primary mb-2 font-weight-bold">Grupo</p>
+            <h3 class="light-green--text mb-2">
+                {{ grupo.nombre }}
+            </h3>
+            <!-- Fechas --->
+            <p class="mb-1">
+                <span class="font-weight-black">
+                    Inicio de clases:
+                </span>&nbsp;
+                {{ oferta_educativa.fecha_inicio_clases }}
+            </p>
+            <!-- Fechas -->
+            <p class="mb-1">
+                <span class="font-weight-black">
+                    Fecha de apertura:
+                </span>&nbsp;
+                {{ grupo.fecha_apertura }}
             </p>
             <p class="mb-0">
                 <span class="font-weight-black">
@@ -37,17 +50,7 @@
                 </span>&nbsp;
             </p>
             <img data-v-80216714="" class="mb-2" :src="get_recurso_para_estatus" alt="alt">
-            <br />
-            <p class="overline indigo--text text--primary mb-2 font-weight-bold">Grupo</p>
-            <h3 class="light-green--text mb-2">
-                {{ grupo.nombre }}
-            </h3>
-            <p class="mb-1">
-                <span class="font-weight-black">
-                    Fecha de apertura:
-                </span>&nbsp;
-                {{ grupo.fecha_apertura }}
-            </p>
+            
         </v-card-text>
     </v-card>
 </template>
