@@ -19,17 +19,17 @@
 
                 <v-col cols="4" v-for="(panel_row_item, panel_row_item_index) in panel_row" :key="panel_row_item_index">
                   <template
-                  v-if="panel === 'CUENTAS'">
-                    <cuenta-card :cuenta="panel_row_item"/>
-                  </template>
-                  <template
-                  v-else-if="panel === 'PROSPECTOS'">
+                  v-if="panel === 'PROSPECTOS'">
                     <prospecto-card :prospecto="panel_row_item" />
                   </template>
                   <template
-                  v-else-if="panel === 'OPORTUNIDADES'">
-                    <oportunidad-card :oportunidad="panel_row_item" />
-                  </template>                  
+                  v-if="panel === 'OPORTUNIDADES'">
+                    <oportunidad-card :oportunidad="panel_row_item"/>
+                  </template>
+                  <template
+                  v-if="panel === 'CUENTAS'">
+                    <cuenta-card :cuenta="panel_row_item"/> 
+                  </template>
                 </v-col>
               </v-row>
             </v-expansion-panel-content>
@@ -74,6 +74,7 @@ export default {
       cuentas: [],
       prospectos: [],
       oportunidades: []
+
     }
 
   },
@@ -81,8 +82,10 @@ export default {
     map_panel() {
         return {
           "CUENTAS": this.cuentas,
+
           "OPORTUNIDADES": this.oportunidades,
           "PROSPECTOS": this.prospectos
+
         }
       },
       get_panel_length(panel) {
@@ -118,189 +121,97 @@ export default {
         return panel_rows;
       },
       get_cuentas() {
-        let cuentas = [];
-        // eslint-disable-next-line no-undef
-        Visualforce.remoting.Manager.invokeAction(
-          'PurecloudScript_controller.getAccountsByPhone',
-          this.telefono,
-          function (result, event) {
-            if (!event.status)
-              alert("Ha courrido un error");
-            result = JSON.parse(result);
-
-            if (result.length === 0)
-              return;
-
-            for (var cuenta of result) {
-              let {
-                Name,
-                ApeMaterno__c,
-                Phone,
-                PersonEmail,
-                Sexo__c,
-                EstadoCivil__c,
-                Id
-              } = cuenta;
-              var cuenta_obj = {
-                id: Id,
-                nombre: Name,
-                apellidos: ApeMaterno__c,
-                telefono: Phone,
-                correo: PersonEmail,
-                sexo: Sexo__c,
-                estado_civil: EstadoCivil__c
-              }
-              cuentas.push(cuenta_obj);
-            }
-            return cuentas;
-          }, {
-            escape: false
-          });
-
-        return cuentas;
+        return []
       },
       
       get_prospectos() {
-        let prospectos = [];
-        // eslint-disable-next-line no-undef
-        Visualforce.remoting.Manager.invokeAction(
-          'PurecloudScript_controller.getLeadsByPhone',
-          this.telefono,
-          function (result, event) {
-            if (!event.status)
-              alert("Ha courrido un error");
-            result = JSON.parse(result);
-
-            if (result.length === 0)
-              return;
-
-            console.log(result);
-
-            for (var prospecto of result) {
-              let {
-                Id,
-                NombreCompleto__c,
-                Phone,
-                Email,
-                Owner,
-                Programa__r,
-                Nivel__r,
-                Periodo__r,
-                Plantel__r,
-                IndicadorInicioClases__c,
-                FechaInicioClases__c,
-                GrupoAsignado__r,
-                FechaCreacion__c,
-                Status
-
-              } = prospecto;
-
-
-              var prospecto_obj = {
-                id: Id,
-                nombre: NombreCompleto__c,
-                telefono: Phone,
-                correo: Email,
-                fecha_creacion: FechaCreacion__c,
-                etapa: Status,
-                owner:{
-                  id: Owner.Id,
-                  nombre: Owner.Name
-                },
-                oferta_educativa:{
-                  programa: Programa__r.Name,
-                  periodo: Periodo__r.Name,
-                  plantel: Plantel__r.Name,
-                  nivel: Nivel__r.Name,
-                  fecha_inicio_clases: FechaInicioClases__c,
-                  estatus: IndicadorInicioClases__c
-                },
-                grupo:{
-                  nombre: GrupoAsignado__r.Name,
-                  fecha_apertura: GrupoAsignado__r.FechaEstimadaApertura__c
-                }
-              }
-              console.log(prospecto_obj);
-              prospectos.push(prospecto_obj);              
-            }
-
-            return prospectos;
-          }, {
-            escape: false
-          });
-
-        return prospectos;
+        return [
+    {
+      "owner": "Copeland Schmidt",
+      "nombre": "Chapman",
+      "apellidos": "Singleton Sims",
+      "telefono": "(912) 512-2711",
+      "correo": "krystal@correo.com",
+      "fecha_creacion": "Mon Jan 07 2019 17:47:41 GMT+0000 (UTC)",
+      "etapa": "alguna etapa",
+      "oferta_educativa": {
+        "programa": "algún programa",
+        "nivel": "algún nivel",
+        "plantel": "algún plantel",
+        "periodo": "algún periodo",
+        "fecha_inicio_clases": "Fri Aug 04 1995 00:48:56 GMT+0000 (UTC)",
+        "estatus": "algún estatus"
       },
-      get_oportunidades(){
-        let oportunidades = [];
+      "grupo": {
+        "nombre": "algún grupo",
+        "fecha_apertura": "Sun Jul 20 1980 04:33:06 GMT+0000 (UTC)"
+      }
+    },
+    {
+      "owner": "Spencer Nguyen",
+      "nombre": "Townsend",
+      "apellidos": "Dunn Austin",
+      "telefono": "(806) 580-2498",
+      "correo": "olsen@correo.com",
+      "fecha_creacion": "Wed Sep 22 1993 13:44:04 GMT+0000 (UTC)",
+      "etapa": "alguna etapa",
+      "oferta_educativa": {
+        "programa": "algún programa",
+        "nivel": "algún nivel",
+        "plantel": "algún plantel",
+        "periodo": "algún periodo",
+        "fecha_inicio_clases": "Wed Aug 06 2003 03:12:44 GMT+0000 (UTC)",
+        "estatus": "algún estatus"
+      },
+      "grupo": {
+        "nombre": "algún grupo",
+        "fecha_apertura": "Wed Apr 06 1977 15:43:36 GMT+0000 (UTC)"
+      }
+    },
+    {
+      "owner": "Ila Vasquez",
+      "nombre": "Tanner",
+      "apellidos": "Cameron Mann",
+      "telefono": "(893) 578-2781",
+      "correo": "susanne@correo.com",
+      "fecha_creacion": "Fri Sep 13 1991 14:09:33 GMT+0000 (UTC)",
+      "etapa": "alguna etapa",
+      "oferta_educativa": {
+        "programa": "algún programa",
+        "nivel": "algún nivel",
+        "plantel": "algún plantel",
+        "periodo": "algún periodo",
+        "fecha_inicio_clases": "Tue Feb 27 1996 07:49:56 GMT+0000 (UTC)",
+        "estatus": "algún estatus"
+      },
+      "grupo": {
+        "nombre": "algún grupo",
+        "fecha_apertura": "Wed Feb 20 1991 16:00:51 GMT+0000 (UTC)"
+      }
+    },
+    {
+      "owner": "Mccall Cole",
+      "nombre": "Goodwin",
+      "apellidos": "Stokes Lindsay",
+      "telefono": "(837) 505-2947",
+      "correo": "annmarie@correo.com",
+      "fecha_creacion": "Fri Jan 08 1971 10:17:02 GMT+0000 (UTC)",
+      "etapa": "alguna etapa",
+      "oferta_educativa": {
+        "programa": "algún programa",
+        "nivel": "algún nivel",
+        "plantel": "algún plantel",
+        "periodo": "algún periodo",
+        "fecha_inicio_clases": "Mon Jan 07 1974 23:43:21 GMT+0000 (UTC)",
+        "estatus": "algún estatus"
+      },
+      "grupo": {
+        "nombre": "algún grupo",
+        "fecha_apertura": "Tue May 24 1983 12:29:57 GMT+0000 (UTC)"
+      }
+    }
+  ]
 
-        // eslint-disable-next-line no-undef
-        Visualforce.remoting.Manager.invokeAction(
-          'PurecloudScript_controller.getOpportunitiesByPhone',
-          this.telefono,
-          function (result, event) {
-            if (!event.status)
-              alert("Ha courrido un error");
-            result = JSON.parse(result);
-
-            if (result.length === 0)
-              return;
-
-            console.log(result);
-
-            for (var oportunidad of result) {
-              let {
-                Id,
-                Name,
-                Account,
-                CorreoCuenta__c,
-                Owner,
-                Programa__r,
-                Nivel__r,
-                Periodo__r,
-                Plantel__r,
-                IndicadorInicioClases__c,
-                FechainicioClases__c,
-                Grupo__r,
-                FechaAperturaGrupo__c,
-                StageName
-              } = oportunidad;
-
-
-              var oportunidad_obj = {
-                id: Id,
-                nombre: Name,
-                telefono: Account.Phone,
-                correo: CorreoCuenta__c,
-                fecha_creacion: undefined,
-                etapa: StageName,
-                owner:{
-                  id: Owner.Id,
-                  nombre: Owner.Name
-                },
-                oferta_educativa:{
-                  programa: Programa__r.Name,
-                  periodo: Periodo__r.Name,
-                  plantel: Plantel__r.Name,
-                  nivel: Nivel__r.Name,
-                  fecha_inicio_clases: FechainicioClases__c,
-                  estatus: IndicadorInicioClases__c
-                },
-                grupo:{
-                  nombre: Grupo__r.Name,
-                  fecha_apertura: FechaAperturaGrupo__c
-                }
-              }
-              console.log(oportunidad_obj);
-              oportunidades.push(oportunidad_obj);              
-            }
-
-            return oportunidades;
-          }, {
-            escape: false
-          });
-
-        return oportunidades;
       }
 
   },
@@ -321,6 +232,7 @@ export default {
     this.cuentas = this.get_cuentas();
     this.oportunidades = this.get_oportunidades();
     this.prospectos = this.get_prospectos();
+    
   }
 };
 </script>

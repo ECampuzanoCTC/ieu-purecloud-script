@@ -18,13 +18,15 @@
                 </span>&nbsp;
                 {{ oferta_educativa.periodo }}
             </p>
+
             <p class="mb-2">
+
                 <span class="font-weight-black">
                     Nivel:
                 </span>&nbsp;
                 {{ oferta_educativa.nivel }}
             </p>
-            
+
             <br />
             <p class="overline indigo--text text--primary mb-2 font-weight-bold">Grupo</p>
             <h3 class="light-green--text mb-2">
@@ -50,7 +52,7 @@
                 </span>&nbsp;
             </p>
             <img data-v-80216714="" class="mb-2" :src="get_recurso_para_estatus" alt="alt">
-            
+
         </v-card-text>
     </v-card>
 </template>
