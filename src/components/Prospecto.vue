@@ -1,7 +1,7 @@
 <template>
     <v-card tile>
         <v-card-text class="pb-2">
-            <p class="mb-0">Prospecto</p>
+            <p class="mb-0">Lead</p>
             <!-- Informacion de contacto -->
             <h3 class="text--primary mb-1">{{ nombre }}</h3>
             <p class="mb-0">

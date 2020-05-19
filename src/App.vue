@@ -66,7 +66,7 @@ export default {
     return {
       telefono: this.$route.query.telefono.replace(/[^0-9]/g, ''),
       paneles: [
-        "PROSPECTOS",
+        "LEADS",
         "OPORTUNIDADES",
         "CUENTAS"
       ],
