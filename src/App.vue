@@ -19,7 +19,7 @@
 
                 <v-col cols="4" v-for="(panel_row_item, panel_row_item_index) in panel_row" :key="panel_row_item_index">
                   <template
-                  v-if="panel === 'PROSPECTOS'">
+                  v-if="panel === 'LEADS'">
                     <prospecto-card :prospecto="panel_row_item" />
                   </template>
                   <template
@@ -72,7 +72,7 @@ export default {
       ],
 
       cuentas: [],
-      prospectos: [],
+      leads: [],
       oportunidades: []
 
     }
@@ -82,9 +82,8 @@ export default {
     map_panel() {
         return {
           "CUENTAS": this.cuentas,
-
           "OPORTUNIDADES": this.oportunidades,
-          "PROSPECTOS": this.prospectos
+          "LEADS": this.leads
 
         }
       },
@@ -124,7 +123,7 @@ export default {
         return []
       },
       
-      get_prospectos() {
+      get_leads() {
         return [
     {
       "owner": "Copeland Schmidt",
@@ -231,7 +230,7 @@ export default {
   beforeMount(){
     this.cuentas = this.get_cuentas();
     this.oportunidades = this.get_oportunidades();
-    this.prospectos = this.get_prospectos();
+    this.leads = this.get_leads();
     
   }
 };
